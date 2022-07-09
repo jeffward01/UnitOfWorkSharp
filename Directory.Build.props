@@ -1,0 +1,25 @@
+<Project>
+	<PropertyGroup>
+		    <TargetFramework>net6.0</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		
+		<PackageIcon>icon.png</PackageIcon>
+	</PropertyGroup>
+	<PropertyGroup Label="CompilerParams">
+		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<!--<Nullable>enable</Nullable>-->
+		<PlatformTarget>anycpu</PlatformTarget>
+	</PropertyGroup>
+	<PropertyGroup Label="DebugBuildOnly" Condition="'$(Configuration)'=='Debug'">
+		<WarningLevel>5</WarningLevel>
+		<CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+		<DefaultItemExcludes>$(DefaultItemExcludes);$(MSBuildProjectDirectory)\nukeeper.settings.json;$(MSBuildProjectDirectory)\nugetConfigSettings.json;$(MSBuildProjectDirectory)\logs\**;$(MSBuildProjectDirectory)\Nuget.Config</DefaultItemExcludes>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+		<ReportAnalyzer>true</ReportAnalyzer>
+		<GenerateFullPaths>true</GenerateFullPaths>
+		<PreferredUILang>en-US</PreferredUILang>
+		<Utf8Output>true</Utf8Output>
+		<ErrorEndLocation>true</ErrorEndLocation>
+	</PropertyGroup>
+</Project>
