@@ -47,29 +47,28 @@ namespace UnitOfWorkSharp.Tests
         [Fact]
         public async Task ToPagedListAsyncTest()
         {
-            using (var db = new InMemoryContext())
-            {
-                var testItems = TestItems();
-                await db.AddRangeAsync(testItems);
-                db.SaveChanges();
+            await using var db = new InMemoryContext();
+            var testItems = TestItems();
+            await db.AddRangeAsync(testItems);
+            await db.SaveChangesAsync();
 
-                var items = db.Customers.Where(t => t.Age > 1);
+            var items = db.Customers.Where(t => t.Age > 1);
 
-                var page = await items.ToPagedListAsync(1, 2);
-                Assert.NotNull(page);
+            var page = await items.ToPagedListAsync(1, 2);
+            Assert.NotNull(page);
 
-                Assert.Equal(4, page.TotalCount);
-                Assert.Equal(2, page.Items.Count);
-                Assert.Equal("E", page.Items[0]
-                    .Name);
+            Assert.Equal(4, page.TotalCount);
+            Assert.Equal(2, page.Items.Count);
+            Assert.Equal("E", page.Items[0]
+                .Name);
 
-                page = await items.ToPagedListAsync(0, 2);
-                Assert.NotNull(page);
-                Assert.Equal(4, page.TotalCount);
-                Assert.Equal(2, page.Items.Count);
-                Assert.Equal("C", page.Items[0]
-                    .Name);
-            }
+            page = await items.ToPagedListAsync(0, 2);
+            Assert.NotNull(page);
+            Assert.Equal(4, page.TotalCount);
+            Assert.Equal(2, page.Items.Count);
+            Assert.Equal("C", page.Items[0]
+                .Name);
+            await db.Database.EnsureDeletedAsync();
         }
     }
 }
