@@ -9,7 +9,6 @@
 		<AllowUnsafeBlocks>false</AllowUnsafeBlocks>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<!--<Nullable>enable</Nullable>-->
-		<PlatformTarget>anycpu</PlatformTarget>
 	</PropertyGroup>
 	<PropertyGroup Label="DebugBuildOnly" Condition="'$(Configuration)'=='Debug'">
 		<WarningLevel>5</WarningLevel>
