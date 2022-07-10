@@ -1,10 +1,12 @@
 name: Unit Of Work Nuget Package Deploy
 
 on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  release:
+    types: [published]
+  #push:
+  #  branches: [ master ]
+  #pull_request:
+  #  branches: [ master ]
 
 jobs:
   build:
