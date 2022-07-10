@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Description>A plugin for Microsoft.EntityFrameworkCore to support repository, unit of work patterns, and multiple database with distributed transaction supported.</Description>
+    <Description>A net6.0 package for Microsoft.EntityFrameworkCore to support repository, caching, auditable entities, unit of work patterns, multiple database with distributed transaction and more. Don't re-invent the wheel each time with a new DAL, simplfy your life with the smart and intelligent UnitOfWorkSharp.</Description>
     <VersionPrefix>1.0.0</VersionPrefix>
     <Authors>jeffward01;jeff@aeonic-tech.com;</Authors>
     <PlatformTarget>anycpu</PlatformTarget>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <AssemblyName>Microsoft.EntityFrameowork.UnitOfWorkSharp</AssemblyName>
-    <PackageId>Microsoft.EntityFrameworkCore.UnitOfWorkSharp</PackageId>
+    <AssemblyName>UnitOfWorkSharp</AssemblyName>
+    <PackageId>UnitOfWorkSharp</PackageId>
     <PackageTags>Entity Framework;entity-framework-core;EF;Data;O/RM;unitofwork;Unit Of Work;unit-of-work</PackageTags>
     <PackageProjectUrl>https://github.com/jeffward01/UnitOfWorkSharp</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
