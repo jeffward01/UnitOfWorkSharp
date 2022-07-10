@@ -1,79 +1,75 @@
 name: Build
-on: 
+on:
   workflow_dispatch:
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    
-    # Checkout the code
-    - uses: actions/checkout@v2
+      # Checkout the code
+      - uses: actions/checkout@v2
 
-    # Setup target framework: net6.0
-    - name: Setup .Net6.0
-      uses: actions/setup-dotnet@v1
-      with:
-       dotnet-version: '6.0.x'       
+      # Setup target framework: net6.0
+      - name: Setup .Net6.0
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
 
-       # Authenticates packages to push to args: 
-       source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
-      env:
-        NUGET_AUTH_TOKEN: '%NUGET_AUTH_TOKEN%'
-    - name: Install dependencies
-      run: dotnet restore
-    - name: Build
-      run: dotnet build --configuration Release --no-restore
-    - name: Test
-      run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage"
-    - name: Publish Unit Test Results
-      uses: EnricoMi/publish-unit-test-result-action@v2.0.0-beta.2
-      if: always()
-      with:
-       files: "TestResults/**/*.xml"
+          # Authenticates packages to push to args:
+          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        env:
+          NUGET_AUTH_TOKEN: "%NUGET_AUTH_TOKEN%"
+      - name: Install dependencies
+        run: dotnet restore
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+      - name: Test
+        run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage"
+      - name: Publish Unit Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2.0.0-beta.2
+        if: always()
+        with:
+          files: "TestResults/**/*.xml"
 
-    - name: Set badge color
-      shell: bash
-      run: |
-        case ${{ fromJSON( steps.test-results.outputs.json ).conclusion }} in
-          success)
-            echo "BADGE_COLOR=31c653" >> $GITHUB_ENV
-            ;;
-          failure)
-            echo "BADGE_COLOR=800000" >> $GITHUB_ENV
-            ;;
-          neutral)
-            echo "BADGE_COLOR=696969" >> $GITHUB_ENV
-            ;;
-        esac
+      - name: Set badge color
+        shell: bash
+        run: |
+          case ${{ fromJSON( steps.test-results.outputs.json ).conclusion }} in
+            success)
+              echo "BADGE_COLOR=31c653" >> $GITHUB_ENV
+              ;;
+            failure)
+              echo "BADGE_COLOR=800000" >> $GITHUB_ENV
+              ;;
+            neutral)
+              echo "BADGE_COLOR=696969" >> $GITHUB_ENV
+              ;;
+          esac
 
-    - name: Create badge
-      uses: emibcn/badge-action@d6f51ff11b5c3382b3b88689ae2d6db22d9737d1
-      with:
-        label: Tests
-        status: '${{ fromJSON( steps.test-results.outputs.json ).formatted.stats.tests }} tests, ${{ fromJSON( steps.test-results.outputs.json ).formatted.stats.runs }} runs: ${{ fromJSON( steps.test-results.outputs.json ).conclusion }}'
-        color: ${{ env.BADGE_COLOR }}
-        path: badge.svg
-    
-    - name: Upload badge to Gist
-      # Upload only for master branch
-      if: >
-        github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'master' ||
-        github.event_name != 'workflow_run' && github.ref == 'refs/heads/master'
-      uses: andymckay/append-gist-action@1fbfbbce708a39bd45846f0955ed5521f2099c6d
-      with:
-        token: ${{ secrets.GIST_TOKEN }}
-        gistURL: https://gist.githubusercontent.com/jeffward01/UnitOfWorkSharpTestResults
-        file: badge.svg
+      - name: Create badge
+        uses: emibcn/badge-action@d6f51ff11b5c3382b3b88689ae2d6db22d9737d1
+        with:
+          label: Tests
+          status: "${{ fromJSON( steps.test-results.outputs.json ).formatted.stats.tests }} tests, ${{ fromJSON( steps.test-results.outputs.json ).formatted.stats.runs }} runs: ${{ fromJSON( steps.test-results.outputs.json ).conclusion }}"
+          color: ${{ env.BADGE_COLOR }}
+          path: badge.svg
 
+      - name: Upload badge to Gist
+        # Upload only for master branch
+        if: >
+          github.event_name == 'workflow_run' && github.event.workflow_run.head_branch == 'master' ||
+          github.event_name != 'workflow_run' && github.ref == 'refs/heads/master'
+        uses: andymckay/append-gist-action@1fbfbbce708a39bd45846f0955ed5521f2099c6d
+        with:
+          token: ${{ secrets.GIST_TOKEN }}
+          gistURL: https://gist.githubusercontent.com/jeffward01/UnitOfWorkSharpTestResults
+          file: badge.svg
 
-
-    - name: Pack
-      run: dotnet pack --no-build --configuration Release src/UnitOfWorkSharp/UnitOfWorkSharp.csproj --output .
-    - name: PushNuget
-      run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.PUBLISH_TO_NUGET_ORG}} --skip-duplicate
-    #- name: PushGithub
-      #run: dotnet nuget push *.nupkg --no-symbols --skip-duplicate
-      env:
-        NUGET_AUTH_TOKEN: ${{ github.token }}
+      - name: Pack
+        run: dotnet pack --no-build --configuration Release src/UnitOfWorkSharp/UnitOfWorkSharp.csproj --output .
+      - name: PushNuget
+        run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.PUBLISH_TO_NUGET_ORG}} --skip-duplicate
+        #- name: PushGithub
+        #run: dotnet nuget push *.nupkg --no-symbols --skip-duplicate
+        env:
+          NUGET_AUTH_TOKEN: ${{ github.token }}
