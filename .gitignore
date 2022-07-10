@@ -14,7 +14,7 @@
 *.userprefs
 
 # Nuget config with github token
-Nuget.Config
+
 
 # Build results
 [Dd]ebug/

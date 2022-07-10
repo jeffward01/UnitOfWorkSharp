@@ -12,12 +12,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    
+    # Checkout the code
     - uses: actions/checkout@v2
+
+    # Setup target framework: net6.0
     - name: Setup .Net6.0
       uses: actions/setup-dotnet@v1
       with:
-       dotnet-version: '6.0.x'
+       dotnet-version: '6.0.x'       
+
+       # Authenticates packages to push to args: 
+       source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      env:
+        NUGET_AUTH_TOKEN: '%NUGET_AUTH_TOKEN%'
     - name: Install dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --configuration Release
+      run: dotnet build --configuration Release --no-restore
+    - name: Test
+      run: dotnet test --no-restore --verbosity normal
+    - name: Pack
+      run: dotnet pack --no-build --configuration Release src/UnitOfWorkSharp/UnitOfWorkSharp.csproj --output .
+    - name: PushNuget
+      run: dotnet nuget push *.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{secrets.PUBLISH_TO_NUGET_ORG}} --skip-duplicate
+    - name: PushGithub
+      run: dotnet nuget push *.nupkg --no-symbols --skip-duplicate
+      env:
+        NUGET_AUTH_TOKEN: ${{ github.token }}

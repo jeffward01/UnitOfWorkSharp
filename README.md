@@ -3,16 +3,17 @@
 
 Forked from --> [Arch/UnitOfWork](https://github.com/Arch/UnitOfWork)
 
-A **net6.0** package for Microsoft.EntityFramework to support repository, unit of work patterns, and multiple database with distributed transaction supported.
+A **net6.0** package for Microsoft.EntityFrameworkCore _(version 6.x.x)_ to support repository, unit of work patterns, and multiple database with distributed transaction supported.
 
-## Goals of Fork
+## Goals of Fork from Arch/UnitOfWork
 
 * Update to net6.0
 * Update all packages to latest net6.0 versions
 * Code refactorings and improvements from open pull requests
     * Note: I ([jeffward01](https://github.com/jeffward01)) will not be actively maintaining this repository. I will maintain it when I have time
     * Everyone is welcome to contribute pull-requests
-
+* Additional features such as Cache provider integration, multi-tenancy auditable records, and other requested / commonly used features
+* To provide a DAL library which **greatly accelerates developement speeds** due to **not re-inventing the wheel** for each and every project you work on...
 
 
 ## Support MySQL multiple databases/tables sharding
