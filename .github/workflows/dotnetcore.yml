@@ -26,9 +26,12 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity normal --collect:"XPlat Code Coverage"
     - name: Publish Unit Test Results
       uses: EnricoMi/publish-unit-test-result-action@v2.0.0-beta.2
+      if: always()
+      with:
+       files: "TestResults/**/*.xml"
     - name: Pack
       run: dotnet pack --no-build --configuration Release src/UnitOfWorkSharp/UnitOfWorkSharp.csproj --output .
     - name: PushNuget
