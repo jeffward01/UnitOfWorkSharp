@@ -8,20 +8,8 @@
 
     public class TestGetFirstOrDefaultAsync
     {
-        private static readonly InMemoryContext db;
-
-        static TestGetFirstOrDefaultAsync()
-        {
-            db = new InMemoryContext();
-            if (db.Countries.Any() == false)
-            {
-                db.AddRange(TestCountries);
-                db.AddRange(TestCities);
-                db.AddRange(TestTowns);
-                db.SaveChanges();
-            }
-        }
-
+      
+   
 
         protected static List<Country> TestCountries =>
             new List<Country>
@@ -123,29 +111,54 @@
         [Fact]
         public async void TestGetFirstOrDefaultAsyncCanInclude()
         {
+            var db = await LoadTestDataAsync();
             var repository = new Repository<City>(db);
             var city = await repository.GetFirstOrDefaultAsync(predicate: c => c.Name == "A",
                 include: source => source.Include(t => t.Towns));
             Assert.NotNull(city);
             Assert.NotNull(city.Towns);
+            await db.Database.EnsureDeletedAsync();
         }
 
 
         [Fact]
         public async void TestGetFirstOrDefaultAsyncGetsCorrectItem()
         {
+            var db = await LoadTestDataAsync();
             var repository = new Repository<City>(db);
             var city = await repository.GetFirstOrDefaultAsync(predicate: t => t.Name == "A");
             Assert.NotNull(city);
             Assert.Equal(1, city.Id);
+            await db.Database.EnsureDeletedAsync();
         }
 
         [Fact]
         public async void TestGetFirstOrDefaultAsyncReturnsNullValue()
         {
+            var db = await LoadTestDataAsync();
             var repository = new Repository<City>(db);
             var city = await repository.GetFirstOrDefaultAsync(predicate: t => t.Name == "Easy-E");
             Assert.Null(city);
+            await db.Database.EnsureDeletedAsync();
+        }
+
+        private async Task<InMemoryContext> LoadTestDataAsync()
+        {
+            var db = new InMemoryContext();
+            await db.Database.EnsureDeletedAsync();
+
+            db = new InMemoryContext();
+            if (db.Countries.Any() == false)
+            {
+                db.AddRange(TestCountries);
+                db.AddRange(TestCities);
+                db.AddRange(TestTowns);
+                await db.SaveChangesAsync();
+            }
+        
+      
+
+            return db;
         }
     }
 }
