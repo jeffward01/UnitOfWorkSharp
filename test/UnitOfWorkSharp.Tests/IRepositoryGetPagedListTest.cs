@@ -8,18 +8,9 @@
 
     public class IRepositoryGetPagedListTest
     {
-        private static readonly InMemoryContext db;
+        
 
-        static IRepositoryGetPagedListTest()
-        {
-            db = new InMemoryContext();
-
-            db.AddRange(TestCountries);
-            db.AddRange(TestCities);
-            db.AddRange(TestTowns);
-
-            db.SaveChanges();
-        }
+      
 
         protected static List<Country> TestCountries =>
             new List<Country>
@@ -121,6 +112,10 @@
         [Fact]
         public void GetPagedList()
         {
+
+
+
+            var db = LoadTestData();
             var repository = new Repository<City>(db);
 
             var page = repository.GetPagedList(t => t.Name == "C", include: source => source.Include(t => t.Country),
@@ -137,11 +132,14 @@
                 .Country.Name);
             Assert.Equal(1, page.Items[0]
                 .Country.Id);
+
+            db.Database.EnsureDeleted();
         }
 
         [Fact]
         public async Task GetPagedListAsync()
         {
+            var db = LoadTestData();
             var repository = new Repository<City>(db);
 
             var page = await repository.GetPagedListAsync(t => t.Name == "C",
@@ -163,6 +161,7 @@
         [Fact]
         public async Task GetPagedListWithIncludingMultipleLevelsAsync()
         {
+            var db = LoadTestData();
             var repository = new Repository<Country>(db);
 
             var page = await repository.GetPagedListAsync(t => t.Name == "A", include: country => country
@@ -181,6 +180,7 @@
         [Fact]
         public void GetPagedListWithoutInclude()
         {
+            var db = LoadTestData();
             var repository = new Repository<City>(db);
 
             var page = repository.GetPagedList(pageIndex: 0, pageSize: 1);
@@ -188,6 +188,17 @@
             Assert.Equal(1, page.Items.Count);
             Assert.Null(page.Items[0]
                 .Country);
+        }
+
+        private InMemoryContext LoadTestData()
+        {
+           var db = new InMemoryContext();
+
+            db.AddRange(TestCountries);
+            db.AddRange(TestCities);
+            db.AddRange(TestTowns);
+            db.SaveChanges();
+            return db;
         }
     }
 }
