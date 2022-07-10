@@ -27,6 +27,8 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
+    - name: Publish Unit Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2.0.0-beta.2
     - name: Pack
       run: dotnet pack --no-build --configuration Release src/UnitOfWorkSharp/UnitOfWorkSharp.csproj --output .
     - name: PushNuget

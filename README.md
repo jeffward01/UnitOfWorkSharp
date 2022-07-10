@@ -2,7 +2,7 @@
 # UnitOfWorkSharp
 
 
-[![Build](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore.yml/badge.svg)](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore.yml)
+[![Build](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore.yml/badge.svg?branch=master)](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore.yml)
 
 
 ---
