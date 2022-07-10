@@ -1,8 +1,8 @@
 name: Unit Of Work Nuget Package Deploy
 
-on:
-  release:
-    types: [published]
+#on:
+#  release:
+    #types: [published]
   #push:
   #  branches: [ master ]
   #pull_request:
