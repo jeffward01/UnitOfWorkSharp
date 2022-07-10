@@ -4,7 +4,6 @@
 
 [![Build](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore.yml/badge.svg?branch=master)](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore.yml)
 
-https://gist.githubusercontent.com/jeffward01/UnitOfWorkSharpTestResults/raw/badge.svg
 
 ---
 
