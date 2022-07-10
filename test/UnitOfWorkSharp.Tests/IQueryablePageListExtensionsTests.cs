@@ -68,7 +68,7 @@ namespace UnitOfWorkSharp.Tests
             Assert.Equal(2, page.Items.Count);
             Assert.Equal("C", page.Items[0]
                 .Name);
-            await db.Database.EnsureDeletedAsync();
+            
         }
     }
 }

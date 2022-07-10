@@ -123,8 +123,6 @@ public class IRepositoryGetPagedListTest
             .Country.Name);
         Assert.Equal(1, page.Items[0]
             .Country.Id);
-
-        await db.Database.EnsureDeletedAsync();
     }
 
     [Fact]
@@ -147,7 +145,6 @@ public class IRepositoryGetPagedListTest
             .Country.Name);
         Assert.Equal(1, page.Items[0]
             .Country.Id);
-        await db.Database.EnsureDeletedAsync();
     }
 
     [Fact]
@@ -167,13 +164,12 @@ public class IRepositoryGetPagedListTest
         Assert.NotNull(page.Items[0]
             .Cities[0]
             .Towns);
-        await db.Database.EnsureDeletedAsync();
     }
 
     [Fact]
     public async Task GetPagedListWithoutInclude()
     {
-        var db = await LoadTestDataAsync();
+        await using var db = await LoadTestDataAsync();
         var repository = new Repository<City>(db);
 
         var page = await repository.GetPagedListAsync(pageIndex: 0, pageSize: 1);
@@ -181,22 +177,16 @@ public class IRepositoryGetPagedListTest
         Assert.Equal(1, page.Items.Count);
         Assert.Null(page.Items[0]
             .Country);
-
-        await db.Database.EnsureDeletedAsync();
     }
 
     private async Task<InMemoryContext> LoadTestDataAsync()
     {
         var db = new InMemoryContext();
-        await db.Database.EnsureDeletedAsync();
 
-       
         db.AddRange(TestCountries);
         db.AddRange(TestCities);
         db.AddRange(TestTowns);
         await db.SaveChangesAsync();
-        
-      
 
         return db;
     }

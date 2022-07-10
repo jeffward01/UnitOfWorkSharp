@@ -117,7 +117,7 @@
                 include: source => source.Include(t => t.Towns));
             Assert.NotNull(city);
             Assert.NotNull(city.Towns);
-            await db.Database.EnsureDeletedAsync();
+            
         }
 
 
@@ -129,7 +129,7 @@
             var city = await repository.GetFirstOrDefaultAsync(predicate: t => t.Name == "A");
             Assert.NotNull(city);
             Assert.Equal(1, city.Id);
-            await db.Database.EnsureDeletedAsync();
+            
         }
 
         [Fact]
@@ -139,13 +139,13 @@
             var repository = new Repository<City>(db);
             var city = await repository.GetFirstOrDefaultAsync(predicate: t => t.Name == "Easy-E");
             Assert.Null(city);
-            await db.Database.EnsureDeletedAsync();
+            
         }
 
         private async Task<InMemoryContext> LoadTestDataAsync()
         {
             var db = new InMemoryContext();
-            await db.Database.EnsureDeletedAsync();
+            
 
             db = new InMemoryContext();
             if (db.Countries.Any() == false)
