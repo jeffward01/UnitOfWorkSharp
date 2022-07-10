@@ -1,6 +1,12 @@
 
 # UnitOfWorkSharp
 
+[![Unit Of Work Nuget Package Deploy](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore.yml/badge.svg)](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore.yml)
+
+![example workflow](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore/badge.svg)
+
+---
+
 Forked from --> [Arch/UnitOfWork](https://github.com/Arch/UnitOfWork)
 
 A **net6.0** package for Microsoft.EntityFrameworkCore _(version 6.x.x)_ to support repository, unit of work patterns, and multiple database with distributed transaction supported.

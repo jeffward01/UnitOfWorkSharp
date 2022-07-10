@@ -1,4 +1,4 @@
-name: Unit Of Work Nuget Package Deploy
+name: Build
 on: 
   workflow_dispatch:
 jobs:
