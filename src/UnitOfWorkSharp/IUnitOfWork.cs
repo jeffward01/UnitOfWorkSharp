@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IUnitOfWork.cs" company="Arch team">
+// <copyright file="IUnitOfWork.cs" >
 // Copyright (c) Arch team. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------

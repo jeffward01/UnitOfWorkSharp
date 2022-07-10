@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IRepository.cs" company="Arch team">
+// <copyright file="IRepository.cs" >
 // Copyright (c) Arch team. All rights reserved.
 // </copyright>
 //-----------------------------------------------------------------------

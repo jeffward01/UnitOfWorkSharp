@@ -20,6 +20,8 @@
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\src\UnitOfWorkSharp\UnitOfWorkSharp.csproj" />
     <ProjectReference Include="..\..\src\UnitOfWork\UnitOfWorkSharp.csproj" />
   </ItemGroup>
+
 </Project>

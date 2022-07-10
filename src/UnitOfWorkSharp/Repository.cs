@@ -19,7 +19,7 @@ namespace UnitOfWorkSharp
     ///     Represents a default generic repository implements the <see cref="IRepository{TEntity}" /> interface.
     /// </summary>
     /// <typeparam name="TEntity">The type of the entity.</typeparam>
-    public class ReadonlyRepository<TEntity> : IRepository<TEntity>
+    public class Repository<TEntity> : IRepository<TEntity>
         where TEntity : class
     {
         protected readonly DbContext _dbContext;
@@ -27,10 +27,10 @@ namespace UnitOfWorkSharp
         protected readonly DbSet<TEntity> _dbSet;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="ReadonlyRepository{TEntity}" /> class.
+        ///     Initializes a new instance of the <see cref="Repository{TEntity}" /> class.
         /// </summary>
         /// <param name="dbContext">The database context.</param>
-        public ReadonlyRepository(DbContext dbContext)
+        public Repository(DbContext dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
             _dbSet = _dbContext.Set<TEntity>();
