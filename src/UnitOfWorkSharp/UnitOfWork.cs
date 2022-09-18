@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Arch team. All rights reserved.
 
+// ReSharper disable ArrangeMethodOrOperatorBody
 namespace UnitOfWorkSharp;
 
 using System.Data;
@@ -128,12 +129,10 @@ public class UnitOfWork<TContext> : IRepositoryFactory, IUnitOfWork<TContext>, I
     /// <returns>The number of state entries written to the database.</returns>
     public virtual int SaveChanges(bool ensureAutoHistory = false)
     {
-        if (ensureAutoHistory)
-        {
-            DbContext.EnsureAutoHistory();
-        }
+        return ExecuteSaveChangesAsync(ensureAutoHistory)
+            .GetAwaiter()
+            .GetResult();
 
-        return DbContext.SaveChanges();
     }
 
     /// <summary>
@@ -147,21 +146,34 @@ public class UnitOfWork<TContext> : IRepositoryFactory, IUnitOfWork<TContext>, I
     /// </returns>
     public virtual async Task<int> SaveChangesAsync(bool ensureAutoHistory = false, CancellationToken cancellationToken = default)
     {
-        if (ensureAutoHistory)
-        {
-            DbContext.EnsureAutoHistory();
-        }
 
-        return await DbContext.SaveChangesAsync(cancellationToken);
+        return await ExecuteSaveChangesAsync(ensureAutoHistory, cancellationToken);
+         
     }
 
     private async Task<int> ExecuteSaveChangesAsync(bool ensureAutoHistory = false, CancellationToken cancellationToken = default)
     {
+        using var ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
         if (ensureAutoHistory)
         {
             DbContext.EnsureAutoHistory();
         }
-        return await DbContext.SaveChangesAsync(cancellationToken);
+
+        try
+        {
+           var entitiesChangedCount = await DbContext.SaveChangesAsync(cancellationToken);
+            ts.Complete();
+
+            return entitiesChangedCount;
+
+        }
+        catch (Exception)
+        {
+         Dispose();
+
+         throw;
+        }
     }
 
     /// <summary>
@@ -176,6 +188,7 @@ public class UnitOfWork<TContext> : IRepositoryFactory, IUnitOfWork<TContext>, I
     public virtual async Task<int> SaveChangesAsync(bool ensureAutoHistory = false, params IUnitOfWork[] unitOfWorks)
     {
         using var ts = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+        
         var count = 0;
         foreach (var unitOfWork in unitOfWorks)
         {
