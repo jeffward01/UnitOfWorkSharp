@@ -109,20 +109,26 @@ public class IRepositoryGetPagedListTest
         var db = await LoadTestDataAsync();
         var repository = new Repository<City>(db);
 
-        var page = await repository.GetPagedListAsync(t => t.Name == "C",
-            include: source => source.Include(t => t.Country), pageSize: 1);
+        var page = await repository.GetPagedListAsync(t => t.Name == "C", include: source => source.Include(t => t.Country), pageSize: 1);
 
         Assert.Equal(1, page.Items.Count);
-        Assert.NotNull(page.Items[0]
-            .Country);
+        Assert.NotNull(
+            page.Items[0]
+                .Country);
 
-        Assert.Equal(page.Items[0]
-            .CountryId, page.Items[0]
-            .Country.Id);
-        Assert.Equal("A", page.Items[0]
-            .Country.Name);
-        Assert.Equal(1, page.Items[0]
-            .Country.Id);
+        Assert.Equal(
+            page.Items[0]
+                .CountryId,
+            page.Items[0]
+                .Country.Id);
+        Assert.Equal(
+            "A",
+            page.Items[0]
+                .Country.Name);
+        Assert.Equal(
+            1,
+            page.Items[0]
+                .Country.Id);
     }
 
     [Fact]
@@ -131,20 +137,26 @@ public class IRepositoryGetPagedListTest
         var db = await LoadTestDataAsync();
         var repository = new Repository<City>(db);
 
-        var page = await repository.GetPagedListAsync(t => t.Name == "C",
-            include: source => source.Include(t => t.Country), pageSize: 1);
+        var page = await repository.GetPagedListAsync(t => t.Name == "C", include: source => source.Include(t => t.Country), pageSize: 1);
 
         Assert.Equal(1, page.Items.Count);
-        Assert.NotNull(page.Items[0]
-            .Country);
+        Assert.NotNull(
+            page.Items[0]
+                .Country);
 
-        Assert.Equal(page.Items[0]
-            .CountryId, page.Items[0]
-            .Country.Id);
-        Assert.Equal("A", page.Items[0]
-            .Country.Name);
-        Assert.Equal(1, page.Items[0]
-            .Country.Id);
+        Assert.Equal(
+            page.Items[0]
+                .CountryId,
+            page.Items[0]
+                .Country.Id);
+        Assert.Equal(
+            "A",
+            page.Items[0]
+                .Country.Name);
+        Assert.Equal(
+            1,
+            page.Items[0]
+                .Country.Id);
     }
 
     [Fact]
@@ -153,17 +165,21 @@ public class IRepositoryGetPagedListTest
         var db = await LoadTestDataAsync();
         var repository = new Repository<Country>(db);
 
-        var page = await repository.GetPagedListAsync(t => t.Name == "A", include: country => country
-            .Include(c => c.Cities)
-            .ThenInclude(city => city.Towns), pageSize: 1);
+        var page = await repository.GetPagedListAsync(
+            t => t.Name == "A",
+            include: country => country.Include(c => c.Cities)
+                .ThenInclude(city => city.Towns),
+            pageSize: 1);
 
         Assert.Equal(1, page.Items.Count);
-        Assert.NotNull(page.Items[0]
-            .Cities);
+        Assert.NotNull(
+            page.Items[0]
+                .Cities);
 
-        Assert.NotNull(page.Items[0]
-            .Cities[0]
-            .Towns);
+        Assert.NotNull(
+            page.Items[0]
+                .Cities[0]
+                .Towns);
     }
 
     [Fact]
@@ -175,8 +191,9 @@ public class IRepositoryGetPagedListTest
         var page = await repository.GetPagedListAsync(pageIndex: 0, pageSize: 1);
 
         Assert.Equal(1, page.Items.Count);
-        Assert.Null(page.Items[0]
-            .Country);
+        Assert.Null(
+            page.Items[0]
+                .Country);
     }
 
     private async Task<InMemoryContext> LoadTestDataAsync()

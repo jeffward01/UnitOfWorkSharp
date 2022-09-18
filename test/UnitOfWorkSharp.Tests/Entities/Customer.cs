@@ -1,11 +1,10 @@
-﻿namespace UnitOfWorkSharp.Tests.Entities
+﻿namespace UnitOfWorkSharp.Tests.Entities;
+
+public class Customer
 {
-    public class Customer
-    {
-        public int Id { get; set; }
+    public int Id { get; set; }
 
-        public string Name { get; set; }
+    public string Name { get; set; }
 
-        public int Age { get; set; }
-    }
+    public int Age { get; set; }
 }

@@ -1,13 +1,10 @@
-﻿namespace UnitOfWorkSharp.Tests.Entities
+﻿namespace UnitOfWorkSharp.Tests.Entities;
+
+public class Country
 {
-    using System.Collections.Generic;
+    public int Id { get; set; }
 
-    public class Country
-    {
-        public int Id { get; set; }
+    public string Name { get; set; }
 
-        public string Name { get; set; }
-
-        public List<City> Cities { get; set; }
-    }
+    public List<City> Cities { get; set; }
 }

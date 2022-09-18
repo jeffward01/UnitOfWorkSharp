@@ -1,6 +1,4 @@
-
 # UnitOfWorkSharp
-
 
 [![Build](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore.yml/badge.svg?branch=master)](https://github.com/jeffward01/UnitOfWorkSharp/actions/workflows/dotnetcore.yml)
 
@@ -9,29 +7,36 @@
 
 Forked from --> [Arch/UnitOfWork](https://github.com/Arch/UnitOfWork)
 
-
-
-A **net6.0** package for Microsoft.EntityFrameworkCore _(version 6.x.x)_ to support repository, unit of work patterns, and multiple database with distributed transaction supported.
+A **net6.0** package for Microsoft.EntityFrameworkCore _(version 6.x.x)_ to support repository, unit of work patterns,
+and multiple database with distributed transaction supported.
 
 ## Goals of Fork from Arch/UnitOfWork
 
 * Update to net6.0
 * Update all packages to latest net6.0 versions
 * Code refactorings and improvements from open pull requests
-    * Note: I ([jeffward01](https://github.com/jeffward01)) will not be actively maintaining this repository. I will maintain it when I have time
+    * Note: I ([jeffward01](https://github.com/jeffward01)) will not be actively maintaining this repository. I will
+      maintain it when I have time
     * Everyone is welcome to contribute pull-requests
-* Additional features such as Cache provider integration, multi-tenancy auditable records, and other requested / commonly used features
-* To provide a DAL library which **greatly accelerates developement speeds** due to **not re-inventing the wheel** for each and every project you work on...
-
+* Additional features such as Cache provider integration, multi-tenancy auditable records, and other requested /
+  commonly used features
+* To provide a DAL library which **greatly accelerates developement speeds** due to **not re-inventing the wheel** for
+  each and every project you work on...
 
 ## Support MySQL multiple databases/tables sharding
 
-> In MySQL, physically, a schema is synonymous with a database. You can substitute the keyword SCHEMA instead of DATABASE in MySQL SQL syntax, for example using CREATE SCHEMA instead of CREATE DATABASE. Some other database products draw a distinction. For example, in the Oracle Database product, a schema represents only a part of a database: the tables and other objects owned by a single user.
+> In MySQL, physically, a schema is synonymous with a database. You can substitute the keyword SCHEMA instead of
+> DATABASE in MySQL SQL syntax, for example using CREATE SCHEMA instead of CREATE DATABASE. Some other database products
+> draw a distinction. For example, in the Oracle Database product, a schema represents only a part of a database: the
+> tables and other objects owned by a single user.
 
 So, for MySQL, the easy way to support this feature is to dynamically change the SCHEMA at the runtime.
 
-After [v1.1.2](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.UnitOfWork/1.1.2) had support MySQL multiple databases/tables sharding in the same model in the same machine. For different machine, you can use DbContextFactory to dynamically create DbContext. 
-You can use [Pomelo.EntityFrameworkCore.MySql](https://www.nuget.org/packages/Pomelo.EntityFrameworkCore.MySql) to test this feature. @[PomeloFoundation](https://github.com/PomeloFoundation)
+After [v1.1.2](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.UnitOfWork/1.1.2) had support MySQL multiple
+databases/tables sharding in the same model in the same machine. For different machine, you can use DbContextFactory to
+dynamically create DbContext.
+You can use [Pomelo.EntityFrameworkCore.MySql](https://www.nuget.org/packages/Pomelo.EntityFrameworkCore.MySql) to test
+this feature. @[PomeloFoundation](https://github.com/PomeloFoundation)
 
 # Quickly start
 
