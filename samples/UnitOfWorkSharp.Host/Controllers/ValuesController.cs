@@ -151,7 +151,7 @@ public class ValuesController : Controller
     public async Task<IList<Blog>> Get() =>
         await _unitOfWork.GetRepository<Blog>()
             .GetAllAsync(
-                include: source => source.Include(blog => blog.Posts)
+                source => source.Include(blog => blog.Posts)
                     .ThenInclude(post => post.Comments));
 
     // GET api/values/Page/5/10

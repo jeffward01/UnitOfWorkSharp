@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="IRepository.cs" >
-// Copyright (c) Arch team. All rights reserved.
+
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -168,8 +168,8 @@ public interface IRepository<TEntity>
     /// </returns>
     /// <remarks>Ex: This method defaults to a read-only, no-tracking query.</remarks>
     IQueryable<TEntity> GetAll(
-        Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false);
+        Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+        bool disableTracking = true, bool ignoreQueryFilters = false);
 
     /// <summary>
     ///     Gets all entities. This method is not recommended
@@ -215,8 +215,8 @@ public interface IRepository<TEntity>
     /// </returns>
     /// <remarks>Ex: This method defaults to a read-only, no-tracking query.</remarks>
     Task<IList<TEntity>> GetAllAsync(
-        Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false);
+        Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+        bool disableTracking = true, bool ignoreQueryFilters = false);
 
     /// <summary>
     ///     Gets all entities. This method is not recommended
@@ -239,8 +239,18 @@ public interface IRepository<TEntity>
         Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false);
 
+
     /// <summary>
-    ///     Gets the first or default entity based on a predicate, orderby delegate and include delegate. This method defaults
+    ///     Gets all entities with target included entities. This method is not recommended
+    /// </summary>
+    /// <param name="include"></param>
+    /// <param name="disableTracking"></param>
+    /// <param name="ignoreQueryFilters"></param>
+    /// <returns></returns>
+    Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include, bool disableTracking = true, bool ignoreQueryFilters = false);
+
+    /// <summary>
+    ///     Gets the first or default entity based on a predicate, orderBy delegate and include delegate. This method defaults
     ///     to a read-only, no-tracking query.
     /// </summary>
     /// <param name="predicate">A function to test each element for a condition.</param>
@@ -261,7 +271,7 @@ public interface IRepository<TEntity>
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false);
 
     /// <summary>
-    ///     Gets the first or default entity based on a predicate, orderby delegate and include delegate. This method defaults
+    ///     Gets the first or default entity based on a predicate, orderBy delegate and include delegate. This method defaults
     ///     to a read-only, no-tracking query.
     /// </summary>
     /// <param name="selector">The selector for projection.</param>
@@ -283,7 +293,7 @@ public interface IRepository<TEntity>
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false);
 
     /// <summary>
-    ///     Gets the first or default entity based on a predicate, orderby delegate and include delegate. This method defaults
+    ///     Gets the first or default entity based on a predicate, orderBy delegate and include delegate. This method defaults
     ///     to a read-only, no-tracking query.
     /// </summary>
     /// <param name="selector">The selector for projection.</param>
@@ -305,7 +315,7 @@ public interface IRepository<TEntity>
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false);
 
     /// <summary>
-    ///     Gets the first or default entity based on a predicate, orderby delegate and include delegate. This method defaults
+    ///     Gets the first or default entity based on a predicate, orderBy delegate and include delegate. This method defaults
     ///     to a read-only, no-tracking query.
     /// </summary>
     /// <param name="predicate">A function to test each element for a condition.</param>
@@ -326,7 +336,7 @@ public interface IRepository<TEntity>
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false);
 
     /// <summary>
-    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderby delegate and page information. This
+    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderBy delegate and page information. This
     ///     method default no-tracking query.
     /// </summary>
     /// <param name="predicate">A function to test each element for a condition.</param>
@@ -350,7 +360,7 @@ public interface IRepository<TEntity>
         bool disableTracking = true, bool ignoreQueryFilters = false);
 
     /// <summary>
-    ///     Gets the <see cref="IPagedList{TResult}" /> based on a predicate, orderby delegate and page information. This
+    ///     Gets the <see cref="IPagedList{TResult}" /> based on a predicate, orderBy delegate and page information. This
     ///     method default no-tracking query.
     /// </summary>
     /// <param name="selector">The selector for projection.</param>
@@ -376,7 +386,7 @@ public interface IRepository<TEntity>
         where TResult : class;
 
     /// <summary>
-    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderby delegate and page information. This
+    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderBy delegate and page information. This
     ///     method default no-tracking query.
     /// </summary>
     /// <param name="predicate">A function to test each element for a condition.</param>
@@ -403,7 +413,7 @@ public interface IRepository<TEntity>
         bool disableTracking = true, CancellationToken cancellationToken = default, bool ignoreQueryFilters = false);
 
     /// <summary>
-    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderby delegate and page information. This
+    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderBy delegate and page information. This
     ///     method default no-tracking query.
     /// </summary>
     /// <param name="selector">The selector for projection.</param>

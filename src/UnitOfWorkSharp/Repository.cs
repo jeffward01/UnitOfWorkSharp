@@ -1,6 +1,4 @@
-﻿// Copyright (c) Arch team. All rights reserved.
-
-namespace UnitOfWorkSharp;
+﻿namespace UnitOfWorkSharp;
 
 using System.Linq.Expressions;
 using System.Reflection;
@@ -17,9 +15,9 @@ using Microsoft.EntityFrameworkCore.Query;
 public class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class
 {
-    protected readonly DbContext _dbContext;
+    protected readonly DbContext DbContext;
 
-    protected readonly DbSet<TEntity> _dbSet;
+    protected readonly DbSet<TEntity> DbSet;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="Repository{TEntity}" /> class.
@@ -27,8 +25,8 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// <param name="dbContext">The database context.</param>
     public Repository(DbContext dbContext)
     {
-        _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-        _dbSet = _dbContext.Set<TEntity>();
+        DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+        DbSet = DbContext.Set<TEntity>();
     }
 
     /// <summary>
@@ -40,7 +38,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// </remarks>
     public virtual void ChangeTable(string table)
     {
-        if (_dbContext.Model.FindEntityType(typeof(TEntity)) is IConventionEntityType relational)
+        if (DbContext.Model.FindEntityType(typeof(TEntity)) is IConventionEntityType relational)
         {
             relational.SetTableName(table);
         }
@@ -50,7 +48,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     ///     Gets all entities. This method is not recommended
     /// </summary>
     /// <returns>The <see cref="IQueryable{TEntity}" />.</returns>
-    public IQueryable<TEntity> GetAll() => _dbSet;
+    public IQueryable<TEntity> GetAll() => DbSet;
 
     /// <summary>
     ///     Gets all entities. This method is not recommended
@@ -69,10 +67,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// </returns>
     /// <remarks>Ex: This method defaults to a read-only, no-tracking query.</remarks>
     public IQueryable<TEntity> GetAll(
-        Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+        Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
         bool disableTracking = true, bool ignoreQueryFilters = false)
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -123,7 +121,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false)
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -155,7 +153,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     }
 
     /// <summary>
-    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderby delegate and page information. This
+    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderBy delegate and page information. This
     ///     method default no-tracking query.
     /// </summary>
     /// <param name="predicate">A function to test each element for a condition.</param>
@@ -178,7 +176,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, int pageIndex = 0, int pageSize = 20,
         bool disableTracking = true, bool ignoreQueryFilters = false)
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -210,7 +208,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     }
 
     /// <summary>
-    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderby delegate and page information. This
+    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderBy delegate and page information. This
     ///     method default no-tracking query.
     /// </summary>
     /// <param name="predicate">A function to test each element for a condition.</param>
@@ -236,7 +234,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, int pageIndex = 0, int pageSize = 20,
         bool disableTracking = true, CancellationToken cancellationToken = default, bool ignoreQueryFilters = false)
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -268,7 +266,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     }
 
     /// <summary>
-    ///     Gets the <see cref="IPagedList{TResult}" /> based on a predicate, orderby delegate and page information. This
+    ///     Gets the <see cref="IPagedList{TResult}" /> based on a predicate, orderBy delegate and page information. This
     ///     method default no-tracking query.
     /// </summary>
     /// <param name="selector">The selector for projection.</param>
@@ -293,7 +291,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         bool disableTracking = true, bool ignoreQueryFilters = false)
         where TResult : class
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -327,7 +325,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     }
 
     /// <summary>
-    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderby delegate and page information. This
+    ///     Gets the <see cref="IPagedList{TEntity}" /> based on a predicate, orderBy delegate and page information. This
     ///     method default no-tracking query.
     /// </summary>
     /// <param name="selector">The selector for projection.</param>
@@ -355,7 +353,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         bool disableTracking = true, CancellationToken cancellationToken = default, bool ignoreQueryFilters = false)
         where TResult : class
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -389,7 +387,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     }
 
     /// <summary>
-    ///     Gets the first or default entity based on a predicate, orderby delegate and include delegate. This method default
+    ///     Gets the first or default entity based on a predicate, orderBy delegate and include delegate. This method default
     ///     no-tracking query.
     /// </summary>
     /// <param name="predicate">A function to test each element for a condition.</param>
@@ -409,7 +407,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false)
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -446,7 +444,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false)
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -478,7 +476,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     }
 
     /// <summary>
-    ///     Gets the first or default entity based on a predicate, orderby delegate and include delegate. This method default
+    ///     Gets the first or default entity based on a predicate, orderBy delegate and include delegate. This method default
     ///     no-tracking query.
     /// </summary>
     /// <param name="selector">The selector for projection.</param>
@@ -499,7 +497,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false)
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -537,7 +535,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false)
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -576,7 +574,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// <param name="sql">The raw SQL.</param>
     /// <param name="parameters">The parameters.</param>
     /// <returns>An <see cref="IQueryable{TEntity}" /> that contains elements that satisfy the condition specified by raw SQL.</returns>
-    public virtual IQueryable<TEntity> FromSql(string sql, params object[] parameters) => _dbSet.FromSqlRaw(sql, parameters);
+    public virtual IQueryable<TEntity> FromSql(string sql, params object[] parameters) => DbSet.FromSqlRaw(sql, parameters);
 
     /// <summary>
     ///     Finds an entity with the given primary key values. If found, is attached to the context and returned. If no entity
@@ -584,7 +582,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// </summary>
     /// <param name="keyValues">The values of the primary key for the entity to be found.</param>
     /// <returns>The found entity or null.</returns>
-    public virtual TEntity Find(params object[] keyValues) => _dbSet.Find(keyValues);
+    public virtual TEntity Find(params object[] keyValues) => DbSet.Find(keyValues);
 
     /// <summary>
     ///     Finds an entity with the given primary key values. If found, is attached to the context and returned. If no entity
@@ -592,7 +590,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// </summary>
     /// <param name="keyValues">The values of the primary key for the entity to be found.</param>
     /// <returns>A <see cref="Task{TEntity}" /> that represents the asynchronous insert operation.</returns>
-    public virtual ValueTask<TEntity> FindAsync(params object[] keyValues) => _dbSet.FindAsync(keyValues);
+    public virtual ValueTask<TEntity> FindAsync(params object[] keyValues) => DbSet.FindAsync(keyValues);
 
     /// <summary>
     ///     Finds an entity with the given primary key values. If found, is attached to the context and returned. If no entity
@@ -604,7 +602,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     ///     A <see cref="Task{TEntity}" /> that represents the asynchronous find operation. The task result contains the
     ///     found entity or null.
     /// </returns>
-    public virtual ValueTask<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken) => _dbSet.FindAsync(keyValues, cancellationToken);
+    public virtual ValueTask<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken) => DbSet.FindAsync(keyValues, cancellationToken);
 
     /// <summary>
     ///     Gets the count based on a predicate.
@@ -615,10 +613,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return _dbSet.Count();
+            return DbSet.Count();
         }
 
-        return _dbSet.Count(predicate);
+        return DbSet.Count(predicate);
     }
 
     /// <summary>
@@ -630,10 +628,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return await _dbSet.CountAsync();
+            return await DbSet.CountAsync();
         }
 
-        return await _dbSet.CountAsync(predicate);
+        return await DbSet.CountAsync(predicate);
     }
 
     /// <summary>
@@ -645,10 +643,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return _dbSet.LongCount();
+            return DbSet.LongCount();
         }
 
-        return _dbSet.LongCount(predicate);
+        return DbSet.LongCount(predicate);
     }
 
     /// <summary>
@@ -660,10 +658,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return await _dbSet.LongCountAsync();
+            return await DbSet.LongCountAsync();
         }
 
-        return await _dbSet.LongCountAsync(predicate);
+        return await DbSet.LongCountAsync(predicate);
     }
 
     /// <summary>
@@ -677,10 +675,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return _dbSet.Max(selector);
+            return DbSet.Max(selector);
         }
 
-        return _dbSet.Where(predicate)
+        return DbSet.Where(predicate)
             .Max(selector);
     }
 
@@ -695,10 +693,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return await _dbSet.MaxAsync(selector);
+            return await DbSet.MaxAsync(selector);
         }
 
-        return await _dbSet.Where(predicate)
+        return await DbSet.Where(predicate)
             .MaxAsync(selector);
     }
 
@@ -713,10 +711,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return _dbSet.Min(selector);
+            return DbSet.Min(selector);
         }
 
-        return _dbSet.Where(predicate)
+        return DbSet.Where(predicate)
             .Min(selector);
     }
 
@@ -731,10 +729,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return await _dbSet.MinAsync(selector);
+            return await DbSet.MinAsync(selector);
         }
 
-        return await _dbSet.Where(predicate)
+        return await DbSet.Where(predicate)
             .MinAsync(selector);
     }
 
@@ -749,10 +747,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return _dbSet.Average(selector);
+            return DbSet.Average(selector);
         }
 
-        return _dbSet.Where(predicate)
+        return DbSet.Where(predicate)
             .Average(selector);
     }
 
@@ -767,10 +765,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return await _dbSet.AverageAsync(selector);
+            return await DbSet.AverageAsync(selector);
         }
 
-        return await _dbSet.Where(predicate)
+        return await DbSet.Where(predicate)
             .AverageAsync(selector);
     }
 
@@ -785,10 +783,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return _dbSet.Sum(selector);
+            return DbSet.Sum(selector);
         }
 
-        return _dbSet.Where(predicate)
+        return DbSet.Where(predicate)
             .Sum(selector);
     }
 
@@ -803,10 +801,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (predicate == null)
         {
-            return await _dbSet.SumAsync(selector);
+            return await DbSet.SumAsync(selector);
         }
 
-        return await _dbSet.Where(predicate)
+        return await DbSet.Where(predicate)
             .SumAsync(selector);
     }
 
@@ -819,10 +817,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (selector == null)
         {
-            return _dbSet.Any();
+            return DbSet.Any();
         }
 
-        return _dbSet.Any(selector);
+        return DbSet.Any(selector);
     }
 
     /// <summary>
@@ -834,10 +832,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         if (selector == null)
         {
-            return await _dbSet.AnyAsync();
+            return await DbSet.AnyAsync();
         }
 
-        return await _dbSet.AnyAsync(selector);
+        return await DbSet.AnyAsync(selector);
     }
 
     /// <summary>
@@ -845,20 +843,20 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// </summary>
     /// <param name="entity">The entity to insert.</param>
     public virtual TEntity Insert(TEntity entity) =>
-        _dbSet.Add(entity)
+        DbSet.Add(entity)
             .Entity;
 
     /// <summary>
     ///     Inserts a range of entities synchronously.
     /// </summary>
     /// <param name="entities">The entities to insert.</param>
-    public virtual void Insert(params TEntity[] entities) => _dbSet.AddRange(entities);
+    public virtual void Insert(params TEntity[] entities) => DbSet.AddRange(entities);
 
     /// <summary>
     ///     Inserts a range of entities synchronously.
     /// </summary>
     /// <param name="entities">The entities to insert.</param>
-    public virtual void Insert(IEnumerable<TEntity> entities) => _dbSet.AddRange(entities);
+    public virtual void Insert(IEnumerable<TEntity> entities) => DbSet.AddRange(entities);
 
     /// <summary>
     ///     Inserts a new entity asynchronously.
@@ -866,7 +864,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// <param name="entity">The entity to insert.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
     /// <returns>A <see cref="Task" /> that represents the asynchronous insert operation.</returns>
-    public virtual ValueTask<EntityEntry<TEntity>> InsertAsync(TEntity entity, CancellationToken cancellationToken = default) => _dbSet.AddAsync(entity, cancellationToken);
+    public virtual ValueTask<EntityEntry<TEntity>> InsertAsync(TEntity entity, CancellationToken cancellationToken = default) => DbSet.AddAsync(entity, cancellationToken);
 
     // Shadow properties?
     //var property = _dbContext.Entry(entity).Property("Created");
@@ -878,7 +876,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// </summary>
     /// <param name="entities">The entities to insert.</param>
     /// <returns>A <see cref="Task" /> that represents the asynchronous insert operation.</returns>
-    public virtual Task InsertAsync(params TEntity[] entities) => _dbSet.AddRangeAsync(entities);
+    public virtual Task InsertAsync(params TEntity[] entities) => DbSet.AddRangeAsync(entities);
 
     /// <summary>
     ///     Inserts a range of entities asynchronously.
@@ -886,31 +884,31 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// <param name="entities">The entities to insert.</param>
     /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
     /// <returns>A <see cref="Task" /> that represents the asynchronous insert operation.</returns>
-    public virtual Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) => _dbSet.AddRangeAsync(entities, cancellationToken);
+    public virtual Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default) => DbSet.AddRangeAsync(entities, cancellationToken);
 
     /// <summary>
     ///     Updates the specified entity.
     /// </summary>
     /// <param name="entity">The entity.</param>
-    public virtual void Update(TEntity entity) => _dbSet.Update(entity);
+    public virtual void Update(TEntity entity) => DbSet.Update(entity);
 
     /// <summary>
     ///     Updates the specified entities.
     /// </summary>
     /// <param name="entities">The entities.</param>
-    public virtual void Update(params TEntity[] entities) => _dbSet.UpdateRange(entities);
+    public virtual void Update(params TEntity[] entities) => DbSet.UpdateRange(entities);
 
     /// <summary>
     ///     Updates the specified entities.
     /// </summary>
     /// <param name="entities">The entities.</param>
-    public virtual void Update(IEnumerable<TEntity> entities) => _dbSet.UpdateRange(entities);
+    public virtual void Update(IEnumerable<TEntity> entities) => DbSet.UpdateRange(entities);
 
     /// <summary>
     ///     Deletes the specified entity.
     /// </summary>
     /// <param name="entity">The entity to delete.</param>
-    public virtual void Delete(TEntity entity) => _dbSet.Remove(entity);
+    public virtual void Delete(TEntity entity) => DbSet.Remove(entity);
 
     /// <summary>
     ///     Deletes the entity by the specified primary key.
@@ -920,20 +918,36 @@ public class Repository<TEntity> : IRepository<TEntity>
     {
         // using a stub entity to mark for deletion
         var typeInfo = typeof(TEntity).GetTypeInfo();
-        var key = _dbContext.Model.FindEntityType(typeInfo)
-            .FindPrimaryKey()
-            .Properties.FirstOrDefault();
-        var property = typeInfo.GetProperty(key?.Name);
+        var entityType = DbContext.Model.FindEntityType(typeInfo);
+        if (entityType == null)
+        {
+            throw new NullReferenceException($"We did not find the entity type belonging to type of >>  {nameof(TEntity)}<< with the id of {id} ");
+        }
+
+        var key = entityType.FindPrimaryKey();
+        if (key == null)
+        {
+            throw new NullReferenceException($"We did not find the key belonging to type of >>  {nameof(TEntity)}<< with the id of {id} ");
+        }
+
+        if (key.Properties.Count == 0)
+        {
+            throw new NullReferenceException($"We did not find any key properties belonging to type of >>  {nameof(TEntity)}<< with the id of {id} ");
+        }
+
+        var keyProperty = key.Properties[0];
+
+        var property = typeInfo.GetProperty(keyProperty.Name);
         if (property != null)
         {
             var entity = Activator.CreateInstance<TEntity>();
             property.SetValue(entity, id);
-            _dbContext.Entry(entity)
+            DbContext.Entry(entity)
                 .State = EntityState.Deleted;
         }
         else
         {
-            var entity = _dbSet.Find(id);
+            var entity = DbSet.Find(id);
             if (entity != null)
             {
                 Delete(entity);
@@ -945,19 +959,19 @@ public class Repository<TEntity> : IRepository<TEntity>
     ///     Deletes the specified entities.
     /// </summary>
     /// <param name="entities">The entities.</param>
-    public virtual void Delete(params TEntity[] entities) => _dbSet.RemoveRange(entities);
+    public virtual void Delete(params TEntity[] entities) => DbSet.RemoveRange(entities);
 
     /// <summary>
     ///     Deletes the specified entities.
     /// </summary>
     /// <param name="entities">The entities.</param>
-    public virtual void Delete(IEnumerable<TEntity> entities) => _dbSet.RemoveRange(entities);
+    public virtual void Delete(IEnumerable<TEntity> entities) => DbSet.RemoveRange(entities);
 
     /// <summary>
     ///     Gets all entities. This method is not recommended
     /// </summary>
     /// <returns>The <see cref="IQueryable{TEntity}" />.</returns>
-    public async Task<IList<TEntity>> GetAllAsync() => await _dbSet.ToListAsync();
+    public async Task<IList<TEntity>> GetAllAsync() => await DbSet.ToListAsync();
 
     /// <summary>
     ///     Gets all entities. This method is not recommended
@@ -976,10 +990,10 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// </returns>
     /// <remarks>Ex: This method defaults to a read-only, no-tracking query.</remarks>
     public async Task<IList<TEntity>> GetAllAsync(
-        Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false)
+        Expression<Func<TEntity, bool>> predicate, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+        bool disableTracking = true, bool ignoreQueryFilters = false)
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -1031,7 +1045,7 @@ public class Repository<TEntity> : IRepository<TEntity>
         Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool ignoreQueryFilters = false)
     {
-        IQueryable<TEntity> query = _dbSet;
+        IQueryable<TEntity> query = DbSet;
 
         if (disableTracking)
         {
@@ -1064,6 +1078,36 @@ public class Repository<TEntity> : IRepository<TEntity>
             .ToListAsync();
     }
 
+
+    /// <summary>
+    ///     Gets all entities with target included entities. This method is not recommended
+    /// </summary>
+    /// <param name="include"></param>
+    /// <param name="disableTracking"></param>
+    /// <param name="ignoreQueryFilters"></param>
+    /// <returns></returns>
+    public async Task<IList<TEntity>> GetAllAsync(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include, bool disableTracking = true, bool ignoreQueryFilters = false)
+    {
+        IQueryable<TEntity> query = DbSet;
+
+        if (disableTracking)
+        {
+            query = query.AsNoTracking();
+        }
+
+        if (include != null)
+        {
+            query = include(query);
+        }
+
+        if (ignoreQueryFilters)
+        {
+            query = query.IgnoreQueryFilters();
+        }
+
+        return await query.ToListAsync();
+    }
+
     /// <summary>
     ///     Change entity state for patch method on web api.
     /// </summary>
@@ -1071,12 +1115,12 @@ public class Repository<TEntity> : IRepository<TEntity>
     /// ///
     /// <param name="state">The entity state.</param>
     public void ChangeEntityState(TEntity entity, EntityState state) =>
-        _dbContext.Entry(entity)
+        DbContext.Entry(entity)
             .State = state;
 
     /// <summary>
     ///     Updates the specified entity.
     /// </summary>
     /// <param name="entity">The entity.</param>
-    public virtual void UpdateAsync(TEntity entity) => _dbSet.Update(entity);
+    public virtual void UpdateAsync(TEntity entity) => DbSet.Update(entity);
 }

@@ -2,6 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 
+// ReSharper disable once InconsistentNaming
 public static class IQueryablePageListExtensions
 {
     /// <summary>

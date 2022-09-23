@@ -9,12 +9,12 @@ public class TestGetFirstOrDefaultAsync
     protected static List<Country> TestCountries =>
         new()
         {
-            new Country()
+            new Country
             {
                 Id = 1,
                 Name = "A"
             },
-            new Country()
+            new Country
             {
                 Id = 2,
                 Name = "B"
@@ -24,37 +24,37 @@ public class TestGetFirstOrDefaultAsync
     public static List<City> TestCities =>
         new()
         {
-            new()
+            new City
             {
                 Id = 1,
                 Name = "A",
                 CountryId = 1
             },
-            new()
+            new City
             {
                 Id = 2,
                 Name = "B",
                 CountryId = 2
             },
-            new()
+            new City
             {
                 Id = 3,
                 Name = "C",
                 CountryId = 1
             },
-            new()
+            new City
             {
                 Id = 4,
                 Name = "D",
                 CountryId = 2
             },
-            new()
+            new City
             {
                 Id = 5,
                 Name = "E",
                 CountryId = 1
             },
-            new()
+            new City
             {
                 Id = 6,
                 Name = "F",
@@ -65,37 +65,37 @@ public class TestGetFirstOrDefaultAsync
     public static List<Town> TestTowns =>
         new()
         {
-            new()
+            new Town
             {
                 Id = 1,
                 Name = "TownA",
                 CityId = 1
             },
-            new()
+            new Town
             {
                 Id = 2,
                 Name = "TownB",
                 CityId = 2
             },
-            new()
+            new Town
             {
                 Id = 3,
                 Name = "TownC",
                 CityId = 3
             },
-            new()
+            new Town
             {
                 Id = 4,
                 Name = "TownD",
                 CityId = 4
             },
-            new()
+            new Town
             {
                 Id = 5,
                 Name = "TownE",
                 CityId = 5
             },
-            new()
+            new Town
             {
                 Id = 6,
                 Name = "TownF",
@@ -135,9 +135,9 @@ public class TestGetFirstOrDefaultAsync
 
     private async Task<InMemoryContext> LoadTestDataAsync()
     {
-        var db = new InMemoryContext();
+      
 
-        db = new InMemoryContext();
+        var  db = new InMemoryContext();
         if (db.Countries.Any() == false)
         {
             db.AddRange(TestCountries);

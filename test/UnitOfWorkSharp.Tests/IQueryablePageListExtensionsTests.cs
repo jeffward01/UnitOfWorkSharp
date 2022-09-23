@@ -4,37 +4,38 @@ using Collections;
 using Entities;
 using Xunit;
 
+// ReSharper disable once InconsistentNaming
 public class IQueryablePageListExtensionsTests
 {
     public List<Customer> TestItems() =>
         new()
         {
-            new()
+            new Customer
             {
                 Name = "A",
                 Age = 1
             },
-            new()
+            new Customer
             {
                 Name = "B",
                 Age = 1
             },
-            new()
+            new Customer
             {
                 Name = "C",
                 Age = 2
             },
-            new()
+            new Customer
             {
                 Name = "D",
                 Age = 3
             },
-            new()
+            new Customer
             {
                 Name = "E",
                 Age = 4
             },
-            new()
+            new Customer
             {
                 Name = "F",
                 Age = 5

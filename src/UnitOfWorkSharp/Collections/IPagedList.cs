@@ -1,6 +1,4 @@
-﻿// Copyright (c) Arch team. All rights reserved.
-
-namespace UnitOfWorkSharp.Collections;
+﻿namespace UnitOfWorkSharp.Collections;
 
 /// <summary>
 ///     Provides the interface(s) for paged list of any type.

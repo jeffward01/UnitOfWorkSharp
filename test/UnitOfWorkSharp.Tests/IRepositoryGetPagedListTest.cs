@@ -4,6 +4,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
+// ReSharper disable once InconsistentNaming
 public class IRepositoryGetPagedListTest
 {
     protected static List<Country> TestCountries =>

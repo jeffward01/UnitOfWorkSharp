@@ -1,10 +1,9 @@
-﻿// Copyright (c) Arch team. All rights reserved.
-
-namespace UnitOfWorkSharp.Collections;
+﻿namespace UnitOfWorkSharp.Collections;
 
 /// <summary>
 ///     Provides some extension methods for <see cref="IEnumerable{T}" /> to provide paging capability.
 /// </summary>
+// ReSharper disable once InconsistentNaming
 public static class IEnumerablePagedListExtensions
 {
     /// <summary>

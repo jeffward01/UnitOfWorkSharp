@@ -1,6 +1,4 @@
-﻿// Copyright (c) Arch team. All rights reserved.
-
-namespace UnitOfWorkSharp.Collections;
+﻿namespace UnitOfWorkSharp.Collections;
 
 /// <summary>
 ///     Represents the default implementation of the <see cref="IPagedList{T}" /> interface.
@@ -24,27 +22,29 @@ public class PagedList<T> : IPagedList<T>
             throw new ArgumentException($"indexFrom: {indexFrom} > pageIndex: {pageIndex}, must indexFrom <= pageIndex");
         }
 
-        if (source is IQueryable<T> querable)
+        if (source is IQueryable<T> queryable)
         {
             PageIndex = pageIndex;
             PageSize = pageSize;
             IndexFrom = indexFrom;
-            TotalCount = querable.Count();
+            TotalCount = queryable.Count();
             TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 
-            Items = querable.Skip((PageIndex - IndexFrom) * PageSize)
+            Items = queryable.Skip((PageIndex - IndexFrom) * PageSize)
                 .Take(PageSize)
                 .ToList();
         }
         else
         {
+            var sourceAsCollection = source as IReadOnlyCollection<T> ?? source.ToList();
+
             PageIndex = pageIndex;
             PageSize = pageSize;
             IndexFrom = indexFrom;
-            TotalCount = source.Count();
+            TotalCount = sourceAsCollection.Count();
             TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 
-            Items = source.Skip((PageIndex - IndexFrom) * PageSize)
+            Items = sourceAsCollection.Skip((PageIndex - IndexFrom) * PageSize)
                 .Take(PageSize)
                 .ToList();
         }
@@ -53,43 +53,43 @@ public class PagedList<T> : IPagedList<T>
     /// <summary>
     ///     Initializes a new instance of the <see cref="PagedList{T}" /> class.
     /// </summary>
-    internal PagedList() => Items = new T[0];
+    internal PagedList() => Items = Array.Empty<T>();
 
     /// <summary>
     ///     Gets or sets the index of the page.
     /// </summary>
     /// <value>The index of the page.</value>
-    public int PageIndex { get; set; }
+    public int PageIndex { get; init; }
 
     /// <summary>
     ///     Gets or sets the size of the page.
     /// </summary>
     /// <value>The size of the page.</value>
-    public int PageSize { get; set; }
+    public int PageSize { get; init; }
 
     /// <summary>
     ///     Gets or sets the total count.
     /// </summary>
     /// <value>The total count.</value>
-    public int TotalCount { get; set; }
+    public int TotalCount { get; init; }
 
     /// <summary>
     ///     Gets or sets the total pages.
     /// </summary>
     /// <value>The total pages.</value>
-    public int TotalPages { get; set; }
+    public int TotalPages { get; init; }
 
     /// <summary>
     ///     Gets or sets the index from.
     /// </summary>
     /// <value>The index from.</value>
-    public int IndexFrom { get; set; }
+    public int IndexFrom { get; init; }
 
     /// <summary>
     ///     Gets or sets the items.
     /// </summary>
     /// <value>The items.</value>
-    public IList<T> Items { get; set; }
+    public IList<T> Items { get; init; }
 
     /// <summary>
     ///     Gets the has previous page.
@@ -128,15 +128,15 @@ internal class PagedList<TSource, TResult> : IPagedList<TResult>
             throw new ArgumentException($"indexFrom: {indexFrom} > pageIndex: {pageIndex}, must indexFrom <= pageIndex");
         }
 
-        if (source is IQueryable<TSource> querable)
+        if (source is IQueryable<TSource> queryable)
         {
             PageIndex = pageIndex;
             PageSize = pageSize;
             IndexFrom = indexFrom;
-            TotalCount = querable.Count();
+            TotalCount = queryable.Count();
             TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 
-            var items = querable.Skip((PageIndex - IndexFrom) * PageSize)
+            var items = queryable.Skip((PageIndex - IndexFrom) * PageSize)
                 .Take(PageSize)
                 .ToArray();
 
@@ -144,13 +144,16 @@ internal class PagedList<TSource, TResult> : IPagedList<TResult>
         }
         else
         {
+            // Avoid multiple enumeration
+            var sourceAsCollection = source as IReadOnlyCollection<TSource> ?? source.ToList();
+
             PageIndex = pageIndex;
             PageSize = pageSize;
             IndexFrom = indexFrom;
-            TotalCount = source.Count();
+            TotalCount = sourceAsCollection.Count();
             TotalPages = (int)Math.Ceiling(TotalCount / (double)PageSize);
 
-            var items = source.Skip((PageIndex - IndexFrom) * PageSize)
+            var items = sourceAsCollection.Skip((PageIndex - IndexFrom) * PageSize)
                 .Take(PageSize)
                 .ToArray();
 

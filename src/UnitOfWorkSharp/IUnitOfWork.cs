@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="IUnitOfWork.cs" >
-// Copyright (c) Arch team. All rights reserved.
+
 // </copyright>
 //-----------------------------------------------------------------------
 
@@ -56,7 +56,7 @@ public interface IUnitOfWork : IDisposable
     /// </summary>
     /// <param name="ensureAutoHistory"><c>True</c> if sayve changes ensure auto record the change history.</param>
     /// <returns>The number of state entries written to the database.</returns>
-   int SaveChanges(bool ensureAutoHistory = false);
+    int SaveChanges(bool ensureAutoHistory = false);
 
     /// <summary>
     ///     Asynchronously saves all changes made in this unit of work to the database.

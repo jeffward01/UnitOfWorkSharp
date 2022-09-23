@@ -1,6 +1,4 @@
-﻿// Copyright (c) Arch team. All rights reserved.
-
-namespace UnitOfWorkSharp;
+﻿namespace UnitOfWorkSharp;
 
 using Microsoft.EntityFrameworkCore;
 

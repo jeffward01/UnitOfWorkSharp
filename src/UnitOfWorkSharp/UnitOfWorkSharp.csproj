@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>A net6.0 package for Microsoft.EntityFrameworkCore to support repository, caching, auditable entities, unit of work patterns, multiple database with distributed transaction and more. Don't re-invent the wheel each time with a new DAL, simplfy your life with the smart and intelligent UnitOfWorkSharp.</Description>
-    <VersionPrefix>1.0.3</VersionPrefix>
+    <VersionPrefix>1.0.4</VersionPrefix>
     <Authors>jeffward01;jeff@aeonic-tech.com;</Authors>
     <PlatformTarget>anycpu</PlatformTarget>
     <NoWarn>$(NoWarn);CS1591</NoWarn>
@@ -14,7 +14,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/jeffward01/UnitOfWorkSharp</RepositoryUrl>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
