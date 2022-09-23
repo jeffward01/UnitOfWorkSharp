@@ -108,7 +108,7 @@ public class TestGetFirstOrDefaultAsync
     {
         var db = await LoadTestDataAsync();
         var repository = new Repository<City>(db);
-        var city = await repository.GetFirstOrDefaultAsync(predicate: c => c.Name == "A", include: source => source.Include(t => t.Towns));
+        var city = await repository.GetFirstOrDefaultAsync(c => c.Name == "A", include: source => source.Include(t => t.Towns));
         Assert.NotNull(city);
         Assert.NotNull(city.Towns);
     }
@@ -119,7 +119,8 @@ public class TestGetFirstOrDefaultAsync
     {
         var db = await LoadTestDataAsync();
         var repository = new Repository<City>(db);
-        var city = await repository.GetFirstOrDefaultAsync(predicate: t => t.Name == "A");
+
+        var city = await repository.GetFirstOrDefaultAsync(t => t.Name == "A");
         Assert.NotNull(city);
         Assert.Equal(1, city.Id);
     }
@@ -129,15 +130,13 @@ public class TestGetFirstOrDefaultAsync
     {
         var db = await LoadTestDataAsync();
         var repository = new Repository<City>(db);
-        var city = await repository.GetFirstOrDefaultAsync(predicate: t => t.Name == "Easy-E");
+        var city = await repository.GetFirstOrDefaultAsync(t => t.Name == "Easy-E");
         Assert.Null(city);
     }
 
     private async Task<InMemoryContext> LoadTestDataAsync()
     {
-      
-
-        var  db = new InMemoryContext();
+        var db = new InMemoryContext();
         if (db.Countries.Any() == false)
         {
             db.AddRange(TestCountries);

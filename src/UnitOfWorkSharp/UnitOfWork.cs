@@ -18,15 +18,18 @@ using Microsoft.EntityFrameworkCore.Metadata;
 public class UnitOfWork<TContext> : IRepositoryFactory, IUnitOfWork<TContext>
     where TContext : DbContext
 {
+    private readonly Dictionary<Type, object> _repositories;
     private bool _disposed;
-
-    private Dictionary<Type, object> _repositories;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="UnitOfWork{TContext}" /> class.
     /// </summary>
     /// <param name="context">The context.</param>
-    public UnitOfWork(TContext context) => DbContext = context ?? throw new ArgumentNullException(nameof(context));
+    public UnitOfWork(TContext context)
+    {
+        DbContext = context ?? throw new ArgumentNullException(nameof(context));
+        _repositories = new Dictionary<Type, object>();
+    }
 
     /// <summary>
     ///     Gets the db context.
@@ -43,16 +46,12 @@ public class UnitOfWork<TContext> : IRepositoryFactory, IUnitOfWork<TContext>
     public IRepository<TEntity> GetRepository<TEntity>(bool hasCustomRepository = false)
         where TEntity : class
     {
-        if (_repositories == null)
-        {
-            _repositories = new Dictionary<Type, object>();
-        }
-
         // what's the best way to support custom repository?
         if (hasCustomRepository)
         {
             var customRepo = DbContext.GetService<IRepository<TEntity>>();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (customRepo != null)
             {
                 return customRepo;

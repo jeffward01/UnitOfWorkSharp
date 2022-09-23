@@ -8,40 +8,66 @@ public class BloggingContext : DbContext
     {
     }
 
-    public DbSet<Blog> Blogs { get; set; }
+    public DbSet<Blog> Blogs => Set<Blog>();
 
-    public DbSet<Post> Posts { get; set; }
+    public DbSet<Post> Posts => Set<Post>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder) => modelBuilder.EnableAutoHistory();
 }
 
 public class Blog
 {
-    public int Id { get; set; }
+    public Blog()
+    {
+        Title = string.Empty;
+        Id = -1;
+        Url = string.Empty;
+        Url = string.Empty;
+        Posts = new List<Post>();
+    }
 
-    public string Url { get; set; }
+    public int Id { get; init; }
 
-    public string Title { get; set; }
+    public string Url { get; init; }
 
-    public List<Post> Posts { get; set; }
+    public string Title { get; init; }
+
+    public List<Post> Posts { get; init; }
 }
 
 public class Post
 {
-    public int Id { get; set; }
+    public Post()
+    {
+        Title = string.Empty;
+        Id = -1;
 
-    public string Title { get; set; }
+        Content = string.Empty;
+        Comments = new List<Comment>();
+    }
 
-    public string Content { get; set; }
+    public int Id { get; init; }
 
-    public List<Comment> Comments { get; set; }
+    public string Title { get; init; }
+
+    public string Content { get; init; }
+
+    public List<Comment> Comments { get; init; }
 }
 
 public class Comment
 {
-    public int Id { get; set; }
+    public Comment()
+    {
+        Title = string.Empty;
+        Id = -1;
 
-    public string Title { get; set; }
+        Content = string.Empty;
+    }
 
-    public string Content { get; set; }
+    public int Id { get; init; }
+
+    public string Title { get; init; }
+
+    public string Content { get; init; }
 }

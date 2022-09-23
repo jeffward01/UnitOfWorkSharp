@@ -160,7 +160,7 @@ public class ValuesController : Controller
     {
         // projection
         var items = _unitOfWork.GetRepository<Blog>()
-            .GetPagedList(
+            .GetPagedListAsProjection(
                 b => new
                 {
                     Name = b.Title,
@@ -179,7 +179,7 @@ public class ValuesController : Controller
 
         var item = _unitOfWork.GetRepository<Blog>()
             .GetFirstOrDefault(
-                predicate: x => x.Title.Contains(term),
+                x => x.Title.Contains(term),
                 include: source => source.Include(blog => blog.Posts)
                     .ThenInclude(post => post.Comments));
 
@@ -205,7 +205,7 @@ public class ValuesController : Controller
 
     // GET api/values/4
     [HttpGet("{id}")]
-    public async Task<Blog> Get(int id) =>
+    public async Task<Blog?> Get(int id) =>
         await _unitOfWork.GetRepository<Blog>()
             .FindAsync(id);
 
